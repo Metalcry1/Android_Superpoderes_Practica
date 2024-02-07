@@ -43,8 +43,9 @@ import com.example.android_superpoderes_practica.R
 @Composable
 fun LoginViewScreen(loginViewModel: LoginViewModel, token: String) {
     //var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    //var password by remember { mutableStateOf("") }
     var username = "metalcry1@gmail.com"
+    var password = "4312"
 
 
 

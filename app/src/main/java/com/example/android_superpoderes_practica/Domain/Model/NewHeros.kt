@@ -14,22 +14,6 @@ data class HeroLocal (
     @ColumnInfo(name = "thumbnail") val thumbnail: String,
 )
 
-/*
-data class HeroRemote(
-    @Json(name = "id") val id: Long,
-    @Json(name = "name") val name: String,
-    @Json(name = "description") val description: String,
-    @Json(name = "modified") val modified: String,
-    @Json(name = "thumbnail") val thumbnail: String,
-    @Json(name = "resourceURI") val resourceURI: String,
-    @Json(name = "comics") val comics: Comics,
-    @Json(name = "series") val series: Comics,
-    @Json(name = "stories") val stories: Stories,
-    @Json(name = "events") val events: Comics,
-    @Json(name = "urls") val urls: List<URL>
-)
-
- */
 
 data class HeroRemote(
     @Json(name = "id") val id: Long,
@@ -38,6 +22,16 @@ data class HeroRemote(
     val convertThumbnailToString: String,
 )
 
+data class HeroRemoteDetail(
+    val id: Long,
+    val name: String,
+    val description: String,
+    val modified: String,
+    val convertThumbnailToString: String,
+    val comics: Comics,
+    val series: Comics,
+
+    )
 
 
 data class HeroUI(
@@ -46,3 +40,16 @@ data class HeroUI(
     val description: String,
     val thumbnail: String
 )
+
+data class HeroUIDetail(
+    val id: Long,
+    val name: String,
+    val description: String,
+    val modified: String,
+    val convertThumbnailToString: String,
+    val comics: Comics,
+    val series: Comics,
+
+    )
+
+

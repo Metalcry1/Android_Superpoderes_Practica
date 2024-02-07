@@ -1,4 +1,4 @@
-package com.example.android_superpoderes_practica.ui.Heroes
+package com.example.android_superpoderes_practica.ui.Heroes.HeroesList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,11 +6,9 @@ import com.example.android_superpoderes_practica.Data.Remote.Repository
 import com.example.android_superpoderes_practica.Domain.Model.HeroUI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,7 +25,6 @@ class HeroesListViewModel @Inject constructor(
 
 
     init {
-
         getHerosList()
     }
 
@@ -37,7 +34,7 @@ class HeroesListViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 _state.update { HeroListState.Loading }
 
-                repository.getHeroList(0).collect {
+                repository.getHeroList(randomOffset()).collect {
                     val result = it
 
                     if (result.isNotEmpty()) {
@@ -47,32 +44,32 @@ class HeroesListViewModel @Inject constructor(
                     }
                 }
             }
+        }
+
     }
 
-
-        suspend fun insertMoreHeroes() {
-            viewModelScope.launch {
-                val listaOffsets = listOf(21, 41)
-                val offset = listaOffsets.random()
-                withContext(Dispatchers.IO) {
-                    repository.insertMoreHeroes(offset)
-                    //getHeroes()
-                }
-
+    suspend fun insertMoreHeroes() {
+        viewModelScope.launch {
+            val listaOffsets = listOf(21, 41)
+            val offset = listaOffsets.random()
+            withContext(Dispatchers.IO) {
+                repository.insertMoreHeroes(offset)
+                getHerosList()
             }
 
         }
 
-        fun randomOffset(): Int {
-            val listaOffsets = listOf(21, 41)
-            return listaOffsets.random()
-        }
     }
 
-sealed class HeroListState {
-    data class Success(val heros: List<HeroUI>): HeroListState()
-    object Loading: HeroListState()
-    data class Error(val error: String): HeroListState()
-}
+    fun randomOffset(): Int {
+        val listaOffsets = listOf(0, 21, 41)
+        return listaOffsets.random()
+    }
+
+    sealed class HeroListState {
+        data class Success(val heros: List<HeroUI>) : HeroListState()
+        object Loading : HeroListState()
+        data class Error(val error: String) : HeroListState()
+    }
 }
 
