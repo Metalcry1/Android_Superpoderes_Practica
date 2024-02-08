@@ -1,7 +1,5 @@
-package com.example.android_superpoderes_practica.data.mappers
+package com.example.android_superpoderes_practica.Data.mappers.HerosMappers
 
-import com.example.android_superpoderes_practica.Domain.Model.Hero
-import com.example.android_superpoderes_practica.Domain.Model.HeroLocal
 import com.example.android_superpoderes_practica.Domain.Model.HeroRemote
 import com.example.android_superpoderes_practica.Domain.Model.HeroUI
 
@@ -14,7 +12,6 @@ class HeroRemoteConvertToUIClass @Inject constructor() {
             HeroUI(
                 it.id,
                 it.name,
-                it.description,
                 it.convertThumbnailToString
             ) }
     }

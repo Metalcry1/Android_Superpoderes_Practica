@@ -2,17 +2,21 @@ package com.example.android_superpoderes_practica.Data.Remote
 
 
 import android.util.Log
-import com.example.android_superpoderes_practica.Data.mappers.HeroToHeroRemote
-import com.example.android_superpoderes_practica.Data.mappers.HeroToHeroRemoteDetail
+import com.example.android_superpoderes_practica.Data.mappers.ComicMappers.ComicToComicRemote
+import com.example.android_superpoderes_practica.Data.mappers.HerosMappers.HeroToHeroRemote
+import com.example.android_superpoderes_practica.Data.mappers.HerosMappers.HeroToHeroRemoteDetail
 import com.example.android_superpoderes_practica.Domain.Model.HeroRemote
 import com.example.android_superpoderes_practica.Domain.Model.HeroRemoteDetail
+import com.example.android_superpoderes_practica.Domain.Model.MarvelComicsRemote
 import com.example.android_superpoderes_practica.di.NetworkLogin
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(
     private val api: MarvelApi,
     private val heroToHeroRemote: HeroToHeroRemote,
-    private val heroToHeroRemoteDetail: HeroToHeroRemoteDetail) {
+    private val heroToHeroRemoteDetail: HeroToHeroRemoteDetail,
+    private val comicToComicRemote: ComicToComicRemote
+) {
 
     val networkLogin = NetworkLogin()
 
@@ -36,6 +40,13 @@ class RemoteDataSource @Inject constructor(
         val heroRemote = heroToHeroRemoteDetail.map(hero)
 
         return heroRemote
+    }
+
+    suspend fun getComicList(offset: Int): List<MarvelComicsRemote>{
+        val comicsResponse = api.getComics(offset)
+        val comics = comicsResponse.dataComics.results
+        val comicsRemote = comicToComicRemote.map(comics)
+        return comicsRemote
     }
 
 

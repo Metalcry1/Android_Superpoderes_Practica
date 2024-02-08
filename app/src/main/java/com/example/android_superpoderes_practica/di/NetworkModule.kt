@@ -23,8 +23,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
 
-   //  https://gateway.marvel.com:443/v1/public/characters?
-    private val BASE_URL = "https://gateway.marvel.com:443/v1/public/"
+    private val BASE_URL = "https://gateway.marvel.com/v1/public/"
     private val apikey = "f3603d6d0330a129071bf9dfa05b49ca"
     private val hash = "0864ea25976921785806d9e08ba4c893"
     private val timestamp = "1"
@@ -43,7 +42,9 @@ class NetworkModule {
             val newRequest = originalRequest.newBuilder()
                 .url(urlWithParams)
                 .build()
+            Log.w("PROVIDES", newRequest.toString())
             chain.proceed(newRequest)
+
 
         }.build()
     }

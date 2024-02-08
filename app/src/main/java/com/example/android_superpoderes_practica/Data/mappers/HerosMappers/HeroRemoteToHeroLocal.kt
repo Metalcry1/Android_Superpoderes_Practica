@@ -1,4 +1,4 @@
-package com.example.android_superpoderes_practica.Data.mappers
+package com.example.android_superpoderes_practica.Data.mappers.HerosMappers
 
 import com.example.android_superpoderes_practica.Domain.Model.HeroLocal
 import com.example.android_superpoderes_practica.Domain.Model.HeroRemote
@@ -11,7 +11,6 @@ class HeroRemoteToHeroLocal @Inject constructor()  {
             HeroLocal(
                 it.id,
                 it.name,
-                it.description,
                 it.convertThumbnailToString
             )
         }
@@ -19,6 +18,6 @@ class HeroRemoteToHeroLocal @Inject constructor()  {
 
 
     fun HeroRemote.mapToLocal(): HeroLocal {
-        return HeroLocal(this.id, this.name,this.description, this.convertThumbnailToString)
+        return HeroLocal(this.id, this.name, this.convertThumbnailToString)
     }
 }

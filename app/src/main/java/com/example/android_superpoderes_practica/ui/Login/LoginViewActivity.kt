@@ -1,5 +1,6 @@
 package com.example.android_superpoderes_practica.ui.Login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -16,9 +17,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat.startActivity
 import com.example.android_superpoderes_practica.AppClass.Companion.prefRepository
-import com.example.android_superpoderes_practica.ui.Heroes.HeroesActivity
+import com.example.android_superpoderes_practica.ui.Main.MainActivity
 import com.example.android_superpoderes_practica.ui.theme.Android_Superpoderes_PracticaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,7 +48,6 @@ fun LoginScreen(loginViewModel: LoginViewModel, token: String ){
     val state by loginViewModel.state.collectAsState()
 
     LaunchedEffect(state) {
-        // Aquí puedes realizar lógica adicional cuando el estado cambia
     }
 
 
@@ -56,8 +55,10 @@ fun LoginScreen(loginViewModel: LoginViewModel, token: String ){
         is LoginState.Success -> {
             val token = (state as LoginState.Success).token
             prefRepository.saveTokenPreferences(token)//SALVO TOKEN EN PREFERENCES
-            val intent = Intent(LocalContext.current, HeroesActivity::class.java)
+            val intent = Intent(LocalContext.current, MainActivity::class.java)
             LocalContext.current.startActivity(intent)
+            (LocalContext.current as? Activity)?.finish()
+
 
         }
         is LoginState.Idle ->

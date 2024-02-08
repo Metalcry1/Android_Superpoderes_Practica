@@ -1,4 +1,4 @@
-package com.example.android_superpoderes_practica.ui.Heroes.HeroesList
+package com.example.android_superpoderes_practica.ui.HeroesList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,8 +20,8 @@ class HeroesListViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
-    private val _state: MutableStateFlow<HeroListState> = MutableStateFlow(HeroListState.Loading)
-    val state: StateFlow<HeroListState> = _state.asStateFlow()
+    private val _stateHero: MutableStateFlow<HeroListState> = MutableStateFlow(HeroListState.Loading)
+    val stateHero: StateFlow<HeroListState> = _stateHero.asStateFlow()
 
 
     init {
@@ -32,15 +32,15 @@ class HeroesListViewModel @Inject constructor(
     fun getHerosList() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _state.update { HeroListState.Loading }
+                _stateHero.update { HeroListState.Loading }
 
                 repository.getHeroList(randomOffset()).collect {
                     val result = it
 
                     if (result.isNotEmpty()) {
-                        _state.update { HeroListState.Success(result) }
+                        _stateHero.update { HeroListState.Success(result) }
                     } else {
-                        _state.update { HeroListState.Error("Error") }
+                        _stateHero.update { HeroListState.Error("Error") }
                     }
                 }
             }
@@ -50,7 +50,7 @@ class HeroesListViewModel @Inject constructor(
 
     suspend fun insertMoreHeroes() {
         viewModelScope.launch {
-            val listaOffsets = listOf(21, 41)
+            val listaOffsets = listOf(10, 20)
             val offset = listaOffsets.random()
             withContext(Dispatchers.IO) {
                 repository.insertMoreHeroes(offset)
@@ -62,7 +62,7 @@ class HeroesListViewModel @Inject constructor(
     }
 
     fun randomOffset(): Int {
-        val listaOffsets = listOf(0, 21, 41)
+        val listaOffsets = listOf(0, 10, 20)
         return listaOffsets.random()
     }
 

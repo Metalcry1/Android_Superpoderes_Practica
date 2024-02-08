@@ -1,15 +1,17 @@
 package com.example.android_superpoderes_practica.Data.Remote
 
-import android.util.Log
-import com.example.android_superpoderes_practica.Data.mappers.HeroRemoteDetailToHeroUIDetail
-import com.example.android_superpoderes_practica.Data.mappers.HeroRemoteToHeroLocal
+import com.example.android_superpoderes_practica.Data.mappers.ComicMappers.ComicRemoteToComicUI
+import com.example.android_superpoderes_practica.Data.mappers.HerosMappers.HeroRemoteDetailToHeroUIDetail
+import com.example.android_superpoderes_practica.Data.mappers.HerosMappers.HeroRemoteToHeroLocal
 import com.example.android_superpoderes_practica.data.local.LocalDataSourceInterface
 import com.example.android_superpoderes_practica.Domain.Model.HeroLocal
 import com.example.android_superpoderes_practica.Domain.Model.HeroRemote
 import com.example.android_superpoderes_practica.Domain.Model.HeroRemoteDetail
 import com.example.android_superpoderes_practica.Domain.Model.HeroUI
 import com.example.android_superpoderes_practica.Domain.Model.HeroUIDetail
-import com.example.android_superpoderes_practica.data.mappers.LocalToUIMapper
+import com.example.android_superpoderes_practica.Data.mappers.HerosMappers.LocalToUIMapper
+import com.example.android_superpoderes_practica.Domain.Model.ComicUI
+import com.example.android_superpoderes_practica.Domain.Model.MarvelComicsRemote
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -21,7 +23,8 @@ class Repository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localToUIMapper: LocalToUIMapper,
     private val heroRemoteToHeroLocal: HeroRemoteToHeroLocal,
-    private val heroRemoteDetailToHeroUIDetail: HeroRemoteDetailToHeroUIDetail
+    private val heroRemoteDetailToHeroUIDetail: HeroRemoteDetailToHeroUIDetail,
+    private val comicRemoteToComicUI: ComicRemoteToComicUI
 ) {
 
 
@@ -57,6 +60,14 @@ class Repository @Inject constructor(
 
     }
 
+    fun getComicsListToRemote(offset: Int): Flow<List<ComicUI>> = flow {
+
+        val comicRemote: List<MarvelComicsRemote> = remoteDataSource.getComicList(offset)
+        val comicRemoteConvertToUI = comicRemoteToComicUI.map(comicRemote)
+        emit(comicRemoteConvertToUI)
+
+    }
+
 
     suspend fun launchLogin(userName: String, password: String): String {
         var token = remoteDataSource.launchLogin(userName, password)
@@ -75,12 +86,6 @@ class Repository @Inject constructor(
 
     }
 
-    suspend fun getOneHeroToRemote(id: Int?){
-        remoteDataSource.getOneHero(id)
-    }
-
-
-    /////////////////////////////////////////////////////////////////////////////////
 
      fun getOneHeroListToRemote(id: Int?): Flow<List<HeroUIDetail>> = flow {
 

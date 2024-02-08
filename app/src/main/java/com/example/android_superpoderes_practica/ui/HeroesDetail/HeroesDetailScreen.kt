@@ -1,17 +1,19 @@
-package com.example.android_superpoderes_practica.ui.Heroes.HeroesDetail
+package com.example.android_superpoderes_practica.ui.HeroesDetail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddToQueue
 import androidx.compose.material.icons.filled.AllInbox
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -20,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +53,9 @@ fun HeroesDetailScreen(
 
     Scaffold(
         modifier = modifier,
+        containerColor = Color.Black,
+        contentColor= Color.Black,
+
         bottomBar = {
             BotomBar(
                 onComicsClick = { showingComics = true },
@@ -82,22 +86,42 @@ fun BotomBar(
             selected = false,
             onClick = onComicsClick,
             icon = {
-                Icon(
-                    tint = Color.Black,
-                    imageVector = Icons.Default.AllInbox,
-                    contentDescription = "Comic"
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+
+                    Text(
+                        text = "Comics",
+                        color = Color.Black
+                    )
+
+                    Icon(
+                        tint = Color.Black,
+                        imageVector = Icons.Default.AllInbox,
+                        contentDescription = "Comics"
+                    )
+                }
             }
         )
         NavigationBarItem(
             selected = false,
             onClick = onSeriesClick,
             icon = {
-                Icon(
-                    tint = Color.Black,
-                    imageVector = Icons.Default.AddToQueue,
-                    contentDescription = "Series"
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+
+                    Text(
+                        text = "Series",
+                        color = Color.Black
+                    )
+
+                    Icon(
+                        tint = Color.Black,
+                        imageVector = Icons.Default.AllInbox,
+                        contentDescription = "Series"
+                    )
+                }
             }
         )
     }
@@ -123,22 +147,27 @@ fun HeroesDetailItem(
                 .padding(16.dp)
                 .align(Alignment.CenterHorizontally)
         )
-        Image(
-            painter = rememberAsyncImagePainter(
-                ImageRequest.Builder(LocalContext.current).data(data = hero.convertThumbnailToString)
-                    .apply(block = fun ImageRequest.Builder.() {
-                        crossfade(true)
-                        placeholder(R.drawable.loading)
-                    }).build()
-            ),
-            contentDescription = "Hero Image",
-            modifier = Modifier
-                .background(Color.White)
-                .height(300.dp)
-                .fillMaxWidth(),
+        Box(modifier = Modifier
+            .fillMaxWidth()
+        ) {
+            Image(
+                painter = rememberAsyncImagePainter(
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(data = hero.convertThumbnailToString)
+                        .apply(block = fun ImageRequest.Builder.() {
+                            crossfade(true)
+                            placeholder(R.drawable.loading)
+                        }).build()
+                ),
+                contentDescription = "Hero Image",
+                modifier = Modifier
+                    .background(Color.Black)
+                    .height(300.dp)
+                    .fillMaxWidth(),
 
-            contentScale = ContentScale.Crop,
-        )
+                contentScale = ContentScale.Fit,
+            )
+        }
 
         val titleText = if (itemsToShow == hero.comics.items) "COMICS" else "SERIES"
         Text(
@@ -156,22 +185,31 @@ fun HeroesDetailItem(
                 .align(Alignment.CenterHorizontally)
         )
 
-        itemsToShow.forEach { item ->
-            Text(
-                text = item.name,
-                fontSize = 10.sp,
-                color = Color.White,
-                style = TextStyle(
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontStyle = FontStyle.Normal,
-                    letterSpacing = 0.1.sp,
-                    lineHeight = 24.sp
-                ),
-                modifier = Modifier.align(Alignment.Start)
-            )
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        ) {
+            itemsToShow.forEach { item ->
+                item.name?.let {
+                    Column(
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    ) {
+                        Text(
+                            text = it,
+                            fontSize = 20.sp,
+                            color = Color.White,
+                            style = TextStyle(
+                                fontFamily = FontFamily.SansSerif,
+                                fontWeight = FontWeight.ExtraBold,
+                                fontStyle = FontStyle.Normal,
+                                letterSpacing = 0.1.sp,
+                                lineHeight = 24.sp
+                            ),
+                            modifier = Modifier.align(Alignment.Start)
+                        )
+                    }
+                }
+            }
         }
+
     }
 }
-
-data class ComicOrSeries(val name: String)

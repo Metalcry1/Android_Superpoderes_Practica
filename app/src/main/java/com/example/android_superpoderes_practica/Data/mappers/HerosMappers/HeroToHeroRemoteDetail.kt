@@ -1,7 +1,6 @@
-package com.example.android_superpoderes_practica.Data.mappers
+package com.example.android_superpoderes_practica.Data.mappers.HerosMappers
 
 import com.example.android_superpoderes_practica.Domain.Model.Hero
-import com.example.android_superpoderes_practica.Domain.Model.HeroRemote
 import com.example.android_superpoderes_practica.Domain.Model.HeroRemoteDetail
 import com.example.android_superpoderes_practica.Domain.Model.Thumbnail
 import javax.inject.Inject
@@ -13,7 +12,6 @@ class HeroToHeroRemoteDetail @Inject constructor() {
             HeroRemoteDetail(
                 it.id,
                 it.name,
-                it.description,
                 it.modified,
                 convertThumbnailToString(it.thumbnail),
                 it.comics,
