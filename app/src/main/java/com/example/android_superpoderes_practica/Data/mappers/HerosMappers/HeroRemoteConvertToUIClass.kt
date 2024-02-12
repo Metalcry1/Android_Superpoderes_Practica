@@ -12,7 +12,9 @@ class HeroRemoteConvertToUIClass @Inject constructor() {
             HeroUI(
                 it.id,
                 it.name,
-                it.convertThumbnailToString
+                it.convertThumbnailToString,
+                it.favourite?: false
+
             ) }
     }
     }

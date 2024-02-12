@@ -33,7 +33,8 @@ data class Hero(
     @Json(name = "series") val series: Comics,
     @Json(name = "stories") val stories: Stories? = null,
     @Json(name = "events") val events: Comics? = null,
-    @Json(name = "urls") val urls: List<URL>? = null
+    @Json(name = "urls") val urls: List<URL>? = null,
+    @Json(name = "favourite") val  favourite: Boolean? = null
 )
 
 data class Comics(

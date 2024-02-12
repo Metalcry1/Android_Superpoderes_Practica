@@ -17,4 +17,13 @@ class LocalDataSource @Inject constructor(private val dao: HeroDAO): LocalDataSo
     override fun updateHeroestoDB(heros: List<HeroLocal>){
         dao.updateHeroes(heros)
     }
+
+    override fun updateFavoriteStatus(heroId: Long, isFavorite: Boolean){
+        dao.updateFavoriteStatus(heroId,isFavorite)
+    }
+
+    override fun getHeroStatusFavourite(heroId: Long): Boolean {
+        return dao.getHeroStatusFavourite(heroId)
+    }
+
 }

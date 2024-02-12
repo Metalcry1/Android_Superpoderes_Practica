@@ -1,17 +1,18 @@
 package com.example.android_superpoderes_practica.Data.Remote
 
 import com.example.android_superpoderes_practica.Data.mappers.ComicMappers.ComicRemoteToComicUI
+import com.example.android_superpoderes_practica.Data.mappers.HerosMappers.HeroLocalToUIMapper
 import com.example.android_superpoderes_practica.Data.mappers.HerosMappers.HeroRemoteDetailToHeroUIDetail
 import com.example.android_superpoderes_practica.Data.mappers.HerosMappers.HeroRemoteToHeroLocal
 import com.example.android_superpoderes_practica.data.local.LocalDataSourceInterface
 import com.example.android_superpoderes_practica.Domain.Model.HeroLocal
 import com.example.android_superpoderes_practica.Domain.Model.HeroRemote
-import com.example.android_superpoderes_practica.Domain.Model.HeroRemoteDetail
 import com.example.android_superpoderes_practica.Domain.Model.HeroUI
 import com.example.android_superpoderes_practica.Domain.Model.HeroUIDetail
-import com.example.android_superpoderes_practica.Data.mappers.HerosMappers.LocalToUIMapper
 import com.example.android_superpoderes_practica.Domain.Model.ComicUI
+import com.example.android_superpoderes_practica.Domain.Model.HeroRemoteDetail
 import com.example.android_superpoderes_practica.Domain.Model.MarvelComicsRemote
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -21,14 +22,14 @@ import javax.inject.Inject
 class Repository @Inject constructor(
     private val localDataSource: LocalDataSourceInterface,
     private val remoteDataSource: RemoteDataSource,
-    private val localToUIMapper: LocalToUIMapper,
+    private val localToUIMapper: HeroLocalToUIMapper,
     private val heroRemoteToHeroLocal: HeroRemoteToHeroLocal,
     private val heroRemoteDetailToHeroUIDetail: HeroRemoteDetailToHeroUIDetail,
     private val comicRemoteToComicUI: ComicRemoteToComicUI
 ) {
 
 
-     fun getHeroList(offset: Int): Flow<List<HeroUI>> {
+    fun getHeroList(offset: Int): Flow<List<HeroUI>> {
 
         val localHeros: List<HeroLocal> = localDataSource.getHeros()
 
@@ -45,18 +46,17 @@ class Repository @Inject constructor(
 
     private fun getHeroListToDB(localHeros: List<HeroLocal>): Flow<List<HeroUI>> = flow {
 
-        emit( localToUIMapper.map(localHeros))
+        emit(localToUIMapper.map(localHeros))
 
     }
 
-     private fun getHeroListToRemote(offset: Int): Flow<List<HeroUI>> = flow {
+    private fun getHeroListToRemote(offset: Int): Flow<List<HeroUI>> = flow {
 
         val remoteHeros: List<HeroRemote> = remoteDataSource.getHeroList(offset)
         val heroConvertToLocalClass = heroRemoteToHeroLocal.map(remoteHeros)
         localDataSource.insertHerosToDB(heroConvertToLocalClass)
         val updatedLocalHeros: List<HeroLocal> = localDataSource.getHeros()
-
-          emit(localToUIMapper.map(updatedLocalHeros))
+        emit(localToUIMapper.map(updatedLocalHeros))
 
     }
 
@@ -87,14 +87,24 @@ class Repository @Inject constructor(
     }
 
 
-     fun getOneHeroListToRemote(id: Int?): Flow<List<HeroUIDetail>> = flow {
+    fun getOneHeroListToRemote(id: String): Flow<HeroUIDetail> = flow {
+        val idString = id
+        val idLong: Long = idString.toLong()
+        val heroRemoteDetail: HeroRemoteDetail = remoteDataSource.getOneHero(idLong)
 
-        val remoteHeros: List<HeroRemoteDetail> = remoteDataSource.getOneHero(id)
-        val heroConvertToUIDetail = heroRemoteDetailToHeroUIDetail.map(remoteHeros)
+        val heroConvertToUIDetail = heroRemoteDetailToHeroUIDetail.map(heroRemoteDetail)
 
         emit(heroConvertToUIDetail)
 
     }
+
+    fun updateFavoriteStatus(heroId: Long, isFavorite: Boolean) {
+        localDataSource.updateFavoriteStatus(heroId, isFavorite)
+    }
+
+     fun getHeroStatusFavourite(heroId: Long): Boolean {
+         return localDataSource.getHeroStatusFavourite(heroId)
+     }
 
 }
 

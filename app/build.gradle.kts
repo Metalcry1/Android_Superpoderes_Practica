@@ -95,6 +95,10 @@ dependencies {
     // Async Image
     implementation("io.coil-kt:coil-compose:2.4.0")
 
+    //Gson
+    implementation ("com.google.code.gson:gson:2.10.1")
+
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.2.1")
     testImplementation("org.testng:testng:6.9.6")

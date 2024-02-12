@@ -125,9 +125,9 @@ data class ThumbnailComics(
 
 enum class ExtensionComics {
     @Json(name = "gif")
-    GIF,
+    gif,
     @Json(name = "jpg")
-    Jpg
+    jpg
 }
 
 enum class Isbn {
@@ -168,7 +168,7 @@ data class ItemTypeComics (
 )
 
 data class TextObject(
-    @Json(name = "type") val type: TextObjectType? = null,
+    @Json(name = "type") val type: String? = null,
     @Json(name = "language") val language: String? = null,
     @Json(name = "text") val text: String? = null
 )

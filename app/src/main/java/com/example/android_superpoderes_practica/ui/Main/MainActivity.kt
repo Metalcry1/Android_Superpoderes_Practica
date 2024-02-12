@@ -1,10 +1,11 @@
 package com.example.android_superpoderes_practica.ui.Main
 
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +17,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AllInbox
+import androidx.compose.material.icons.filled.CollectionsBookmark
+import androidx.compose.material.icons.filled.Groups2
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
@@ -58,6 +60,7 @@ class MainActivity : ComponentActivity() {
     private val heroesDetailViewModel: HeroesDetailViewModel by viewModels()
     private val comicsViewModel: ComicsViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -71,7 +74,6 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(navController = navController, startDestination = "heroList") {
                         composable("heroList") {
-                            Log.w("HEROES", "PASO POR LIST")
                             MainScreen(
                                 heroesListViewModel = heroesListViewModel,
                                 comicsViewModel = comicsViewModel,
@@ -87,11 +89,9 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         ) {
-                            val id = it.arguments?.getString("heroID")
+                            val id = it.arguments?.getString("heroID")?: "12345"
 
-                            val idConvert = id?.toInt()
-                            val result = heroesDetailViewModel.getOneHero(idConvert)
-                            Log.w("HEROES", "PASO POR DETAIL")
+                            val result = heroesDetailViewModel.getOneHero(id)
                             HeroDetailMainScreen(
                                 heroesDetailViewModel = heroesDetailViewModel,
                                 navController = navController
@@ -104,6 +104,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @Composable
     fun MainScreen(
         heroesListViewModel: HeroesListViewModel,
@@ -221,7 +222,7 @@ class MainActivity : ComponentActivity() {
 
                         Icon(
                             tint = Color.Black,
-                            imageVector = Icons.Default.AllInbox,
+                            imageVector = Icons.Default.Groups2,
                             contentDescription = "Heroes List"
                         )
                     }
@@ -242,7 +243,7 @@ class MainActivity : ComponentActivity() {
 
                         Icon(
                             tint = Color.Black,
-                            imageVector = Icons.Default.AllInbox,
+                            imageVector = Icons.Default.CollectionsBookmark,
                             contentDescription = "Comics List"
                         )
                     }
@@ -273,7 +274,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .padding(it)
                                 .background(Color.Black),
-                            navController = navController
+                            heroesDetailViewModel
                         )
 
                     else -> {}

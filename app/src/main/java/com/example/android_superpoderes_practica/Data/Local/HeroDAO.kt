@@ -23,6 +23,15 @@ interface HeroDAO {
         insertAll(heros)
     }
 
+    @Query("UPDATE heros SET favourite = :isFavorite WHERE id = :heroId")
+    fun updateFavoriteStatus(heroId: Long, isFavorite: Boolean)
+
+    @Query("SELECT * FROM heros WHERE id = :heroId")
+    fun getHeroById(heroId: Long): HeroLocal
+
     @Query("DELETE FROM heros")
     fun deleteAllHeroes()
+
+    @Query("SELECT favourite FROM heros WHERE id = :heroId")
+    fun getHeroStatusFavourite(heroId: Long): Boolean
 }

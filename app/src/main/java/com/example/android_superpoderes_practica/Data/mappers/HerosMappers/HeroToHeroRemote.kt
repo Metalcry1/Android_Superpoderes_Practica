@@ -12,7 +12,9 @@ class HeroToHeroRemote @Inject constructor() {
             HeroRemote(
                 it.id,
                 it.name,
-                convertThumbnailToString(it.thumbnail)//
+                it.modified,
+                convertThumbnailToString(it.thumbnail),
+                it.favourite?: false
             )
         }
     }

@@ -15,10 +15,10 @@ interface MarvelApi {
 
 
     @GET("characters/{id}")
-    suspend fun getOneHero(@Path("id") id: Int): Marvel
+    suspend fun getOneHero(@Path("id") id: Long): Marvel
 
 
-    @GET("comics?modifiedSince=01%2F01%2F2010")
+    @GET("comics?modifiedSince=01%2F01%2F2020")
     suspend fun getComics(@Query("offset") offset: Int): MarvelResponseComics
 
 }
