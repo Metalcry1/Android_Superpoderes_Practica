@@ -56,7 +56,7 @@ fun HeroesDetailScreen(
 ) {
     var showingComics by remember { mutableStateOf(true) }
     val isFavorite by heroesDetailViewModel.isFavorite.collectAsState()
-
+    heroesDetailViewModel.getHeroStatusFavourite(hero.id)
 
     Scaffold(
         modifier = modifier,
