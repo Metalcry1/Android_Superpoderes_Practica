@@ -1,58 +1,58 @@
-package com.example.android_superpoderes_practica.ui.Login
 
-import com.example.android_superpoderes_practica.Data.Remote.Repository
-import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Test
+import kotlin.time.ExperimentalTime
+import app.cash.turbine.test
+import com.example.android_superpoderes_practica.dataa.Remote.Repository
+import com.example.android_superpoderes_practica.ui.Login.LoginState
+import com.example.android_superpoderes_practica.ui.Login.LoginViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.junit.After
 
-// SUT
-private lateinit var loginViewModel: LoginViewModel
+@ExperimentalCoroutinesApi
+class LoginViewModelTest {
 
-// Depencias
-private val repository: Repository = mockk()
-private val mainThreadSurrogate = newSingleThreadContext("UI thread")
+    private lateinit var loginviewModel: LoginViewModel
+    private val repository: Repository = mockk()
+    private val testDispatcher = TestCoroutineDispatcher()
 
-@BeforeEach
-fun setUp() {
-    loginViewModel = LoginViewModel(repository, UnconfinedTestDispatcher())
-    Dispatchers.setMain(mainThreadSurrogate)
+    @Before
+    fun setup() {
+        Dispatchers.setMain(testDispatcher)
+        loginviewModel = LoginViewModel(repository)
+    }
+
+    @After
+    fun cleanup() {
+        Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
+    }
+
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun `whe launchLogin THEN success and return token String`() =  testDispatcher.runBlockingTest {
+        // Given
+        val userName = "user"
+        val password = "password"
+        val token = "12345"
+        coEvery { repository.launchLogin(userName, password) } returns token
+
+        // When
+        loginviewModel.launchLogin(userName, password)
+
+        // Then
+        loginviewModel.state.test {
+            assertEquals(LoginState.Success(token), awaitItem())
+
+        }
+    }
 }
-
-@Test
-fun `WHEN launchLogin THEN return state loading and success String`() = runTest {
-    val userName = "userName"
-    val password = "password"
-    val token = "token"
-
-    // GIVEN
-    coEvery { repository.launchLogin(userName, password) } returns token
-
-    // WHEN
-    val actual = loginViewModel.launchLogin(userName, password)
-
-    val actualLiveDataValue1 = loginViewModel.state
-    Truth.assertThat(actualLiveDataValue1).isEqualTo(LoginState(token))
-
-    advanceUntilIdle()
-
-    val actualLiveDataValue2 = loginViewModel.
-    Truth.assertThat(actualLiveDataValue2).isEqualTo(LoginState(token))
-}
-
-@AfterEach
-fun tearDown() {
-    Dispatchers.resetMain()
-}
-
-

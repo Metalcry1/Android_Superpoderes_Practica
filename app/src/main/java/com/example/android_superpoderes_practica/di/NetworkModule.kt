@@ -3,7 +3,7 @@ package com.example.android_superpoderes_practica.di
 
 import android.util.Log
 import com.example.android_superpoderes_practica.AppClass.Companion.prefRepository
-import com.example.android_superpoderes_practica.Data.Remote.MarvelApi
+import com.example.android_superpoderes_practica.dataa.Remote.MarvelApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

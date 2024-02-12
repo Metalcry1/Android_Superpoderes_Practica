@@ -1,4 +1,4 @@
-package com.example.android_superpoderes_practica.Data.mappers.ComicMappers
+package com.example.android_superpoderes_practica.dataa.mappers.ComicMappers
 
 import com.example.android_superpoderes_practica.Domain.Model.ComicUI
 import com.example.android_superpoderes_practica.Domain.Model.MarvelComicsRemote

@@ -1,4 +1,4 @@
-package com.example.android_superpoderes_practica.Data.mappers.HerosMappers
+package com.example.android_superpoderes_practica.dataa.mappers.HerosMappers
 
 
 import com.example.android_superpoderes_practica.Domain.Model.HeroLocal

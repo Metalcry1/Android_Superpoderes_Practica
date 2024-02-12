@@ -2,7 +2,7 @@ package com.example.android_superpoderes_practica.ui.HeroesList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android_superpoderes_practica.Data.Remote.Repository
+import com.example.android_superpoderes_practica.dataa.Remote.Repository
 import com.example.android_superpoderes_practica.Domain.Model.HeroUI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +34,7 @@ class HeroesListViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 _stateHero.update { HeroListState.Loading }
 
-                repository.getHeroList(randomOffset()).collect {
+                repository.getHeroList(0).collect {
                     val result = it
 
                     if (result.isNotEmpty()) {

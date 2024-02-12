@@ -1,10 +1,10 @@
-package com.example.android_superpoderes_practica.Data.Remote
+package com.example.android_superpoderes_practica.dataa.Remote
 
 
-import com.example.android_superpoderes_practica.Data.mappers.HerosMappers.HeroToHeroRemoteDetail
+import com.example.android_superpoderes_practica.dataa.mappers.HerosMappers.HeroToHeroRemoteDetail
 import android.util.Log
-import com.example.android_superpoderes_practica.Data.mappers.ComicMappers.ComicToComicRemote
-import com.example.android_superpoderes_practica.Data.mappers.HerosMappers.HeroToHeroRemote
+import com.example.android_superpoderes_practica.dataa.mappers.ComicMappers.ComicToComicRemote
+import com.example.android_superpoderes_practica.dataa.mappers.HerosMappers.HeroToHeroRemote
 import com.example.android_superpoderes_practica.Domain.Model.HeroRemote
 import com.example.android_superpoderes_practica.Domain.Model.HeroRemoteDetail
 import com.example.android_superpoderes_practica.Domain.Model.MarvelComicsRemote

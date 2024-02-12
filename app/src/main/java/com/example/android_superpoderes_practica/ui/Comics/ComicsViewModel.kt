@@ -2,7 +2,7 @@ package com.example.android_superpoderes_practica.ui.Comics
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android_superpoderes_practica.Data.Remote.Repository
+import com.example.android_superpoderes_practica.dataa.Remote.Repository
 import com.example.android_superpoderes_practica.Domain.Model.ComicUI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
