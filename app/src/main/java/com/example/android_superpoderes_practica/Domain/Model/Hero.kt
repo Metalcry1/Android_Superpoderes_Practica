@@ -69,10 +69,10 @@ enum class ItemType {
 
 data class Thumbnail(
     @Json(name = "path") val path: String? = null,
-    @Json(name = "extension") val extension: Extension? = null
+    @Json(name = "extension") val extensions: Extensions? = null
 )
 
-enum class Extension {
+enum class Extensions {
     gif,
     jpg
 }

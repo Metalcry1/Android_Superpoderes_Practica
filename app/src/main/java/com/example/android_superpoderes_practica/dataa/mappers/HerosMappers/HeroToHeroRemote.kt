@@ -20,7 +20,7 @@ class HeroToHeroRemote @Inject constructor() {
     }
 
     private fun convertThumbnailToString(thumbnail: Thumbnail): String {
-        val thumbnail = "${thumbnail.path}.${thumbnail.extension}"
+        val thumbnail = "${thumbnail.path}.${thumbnail.extensions}"
         return thumbnail.lowercase()
     }
 }

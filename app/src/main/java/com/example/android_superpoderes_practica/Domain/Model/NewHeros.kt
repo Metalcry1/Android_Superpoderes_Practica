@@ -30,9 +30,7 @@ data class HeroRemoteDetail(
     val thumbnail: String,
     val comics: Comics,
     val series: Comics,
-) {
-
-}
+)
 
 data class HeroUIDetail(
     val id: Long,

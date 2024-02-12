@@ -7,6 +7,7 @@ import com.example.android_superpoderes_practica.Domain.Model.HeroUIDetail
 import com.example.android_superpoderes_practica.dataa.Remote.Repository
 import com.example.android_superpoderes_practica.ui.HeroesDetail.HeroDetailState
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -66,4 +67,31 @@ class HeroesDetailViewModelTest{
         }
     }
 
+    @Test
+    fun `getHeroStatusFavourite WHEN repository returns false THEN isFavorite is false`() = runBlockingTest {
+        // Given
+        val heroId = 123L
+        coEvery { repository.getHeroStatusFavourite(heroId) } returns false
+
+        // When
+        heroesDetailviewModel.getHeroStatusFavourite(heroId)
+
+        // Then
+        assertEquals(false, heroesDetailviewModel.isFavorite.value)
+    }
+
+    @Test
+    fun `onFavoriteChanged WHEN called THEN updateFavoriteStatus is called with correct arguments`() = runBlockingTest {
+        // Given
+        val repository = mockk<Repository>()
+        val viewModel = HeroesDetailViewModel(repository)
+        val heroId = "123" // ID del héroe en formato String
+        val isFavorite = true // Booleano que indica si el héroe es favorito o no
+
+        // When
+        viewModel.onFavoriteChanged(heroId, isFavorite)
+
+        // Then
+        coVerify { repository.updateFavoriteStatus(heroId.toLong(), isFavorite) }
+    }
 }

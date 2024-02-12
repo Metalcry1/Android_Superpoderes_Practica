@@ -5,14 +5,18 @@ import com.example.android_superpoderes_practica.Domain.Model.HeroUI
 import com.example.android_superpoderes_practica.dataa.Remote.Repository
 import com.example.android_superpoderes_practica.ui.HeroesDetail.HeroesDetailViewModel
 import io.mockk.coEvery
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -38,7 +42,7 @@ class HeroesListViewModelTest{
 
     @OptIn(ExperimentalTime::class)
     @Test
-    fun `WHEN getHeroList THEN success`()=  testDispatcher.runBlockingTest{
+    fun `WHEN getHeroList THEN success`()=  runBlockingTest{
         val offset = 0
         val heroUI = HeroUI(108234, "Nombre1", "photo", true)
         val herosUI = listOf(heroUI, heroUI, heroUI)
@@ -53,4 +57,18 @@ class HeroesListViewModelTest{
 
         }
     }
+
+    @Test
+    fun `WHEN change Heroes`() = runBlockingTest {
+        // Given
+        val offset = 0
+        coEvery { repository.insertMoreHeroes(offset) } just runs
+
+        // When
+        val actual = heroesListViewModel.insertMoreHeroes()
+
+        // Then
+        assertEquals(Unit, actual)
+    }
+
 }
