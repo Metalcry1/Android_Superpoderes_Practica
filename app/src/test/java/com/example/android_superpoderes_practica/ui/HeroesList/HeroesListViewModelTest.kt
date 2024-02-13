@@ -22,11 +22,13 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.time.ExperimentalTime
 
+@ExperimentalCoroutinesApi
 class HeroesListViewModelTest{
 
     private lateinit var heroesListViewModel: HeroesListViewModel
     private val repository: Repository = mockk()
     private val testDispatcher = TestCoroutineDispatcher()
+
 
     @Before
     fun setUp(){
@@ -34,6 +36,7 @@ class HeroesListViewModelTest{
         heroesListViewModel = HeroesListViewModel(repository)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun cleanup() {
         Dispatchers.resetMain()
@@ -42,7 +45,7 @@ class HeroesListViewModelTest{
 
     @OptIn(ExperimentalTime::class)
     @Test
-    fun `WHEN getHeroList THEN success`()=  runBlockingTest{
+    fun `WHEN getHeroList THEN success`()=  testDispatcher.runBlockingTest{
         val offset = 0
         val heroUI = HeroUI(108234, "Nombre1", "photo", true)
         val herosUI = listOf(heroUI, heroUI, heroUI)
@@ -59,10 +62,10 @@ class HeroesListViewModelTest{
     }
 
     @Test
-    fun `WHEN change Heroes`() = runBlockingTest {
+    fun `WHEN change Heroes`() = testDispatcher.runBlockingTest {
         // Given
         val offset = 0
-        coEvery { repository.insertMoreHeroes(offset) } just runs
+        coEvery { repository.insertMoreHeroes(0) } just runs
 
         // When
         val actual = heroesListViewModel.insertMoreHeroes()

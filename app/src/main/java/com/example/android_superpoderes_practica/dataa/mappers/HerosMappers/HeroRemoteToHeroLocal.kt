@@ -19,9 +19,4 @@ class HeroRemoteToHeroLocal @Inject constructor()  {
             )
         }
     }
-
-
-    fun HeroRemote.mapToLocal(): HeroLocal {
-        return HeroLocal(this.id, this.name, this.modified, this.convertThumbnailToString)
-    }
 }
