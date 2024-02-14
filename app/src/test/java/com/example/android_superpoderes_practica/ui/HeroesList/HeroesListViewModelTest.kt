@@ -22,13 +22,11 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.time.ExperimentalTime
 
-@ExperimentalCoroutinesApi
 class HeroesListViewModelTest{
 
     private lateinit var heroesListViewModel: HeroesListViewModel
     private val repository: Repository = mockk()
     private val testDispatcher = TestCoroutineDispatcher()
-
 
     @Before
     fun setUp(){
@@ -36,7 +34,6 @@ class HeroesListViewModelTest{
         heroesListViewModel = HeroesListViewModel(repository)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun cleanup() {
         Dispatchers.resetMain()

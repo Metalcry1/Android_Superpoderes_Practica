@@ -22,7 +22,7 @@ import javax.inject.Inject
 class Repository @Inject constructor(
     private val localDataSource: LocalDataSourceInterface,
     private val remoteDataSource: RemoteDataSource,
-    private val localToUIMapper: HeroLocalToUIMapper,
+    private val heroLocalToUIMapper: HeroLocalToUIMapper,
     private val heroRemoteToHeroLocal: HeroRemoteToHeroLocal,
     private val heroRemoteDetailToHeroUIDetail: HeroRemoteDetailToHeroUIDetail,
     private val comicRemoteToComicUI: ComicRemoteToComicUI
@@ -46,7 +46,7 @@ class Repository @Inject constructor(
 
     private fun getHeroListToDB(localHeros: List<HeroLocal>): Flow<List<HeroUI>> = flow {
 
-        emit(localToUIMapper.map(localHeros))
+        emit(heroLocalToUIMapper.map(localHeros))
 
     }
 
@@ -56,7 +56,7 @@ class Repository @Inject constructor(
         val heroConvertToLocalClass = heroRemoteToHeroLocal.map(remoteHeros)
         localDataSource.insertHerosToDB(heroConvertToLocalClass)
         val updatedLocalHeros: List<HeroLocal> = localDataSource.getHeros()
-        emit(localToUIMapper.map(updatedLocalHeros))
+        emit(heroLocalToUIMapper.map(updatedLocalHeros))
 
     }
 
